@@ -1,11 +1,4 @@
 terraform {
-  backend "s3" {
-    bucket         = "ntimdotdev-tf-state-092020251556"
-    key            = "lt/terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "ntimdotdev-tf-state-locks"
-    encrypt        = true
-  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
