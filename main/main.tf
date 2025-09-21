@@ -15,13 +15,13 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 
 # Provision EC2 instances
 resource "aws_instance" "instance_1" {
-    ami = "ami-0360c520857e3138f"
-    instance_type = "t2.micro"
+    ami = var.ami
+    instance_type = var.instance_type
     security_groups = [aws_security_group.instances.name]
     user_data = <<-EOF
         #!/bin/bash
@@ -30,8 +30,8 @@ resource "aws_instance" "instance_1" {
         EOF
 }
 resource "aws_instance" "instance_2" {
-    ami = "ami-0360c520857e3138f"
-    instance_type = "t2.micro"
+    ami = var.ami
+    instance_type = var.instance_type
     security_groups = [aws_security_group.instances.name]
     user_data = <<-EOF
         #!/bin/bash
@@ -154,3 +154,14 @@ resource "aws_lb" "load_balancer" {
     security_groups = [aws_security_group.alb.id]
 }
 
+resource "aws_db_instance" "db_instance" {
+    allocated_storage = 20
+    storage_type = "gp2"
+    engine = "postgres"
+    engine_version = "12.4"
+    instance_class = "db.t2.micro"
+    name = var.db_name
+    username = var.db_user
+    password = var.db_pass
+    skip_final_snapshot = true
+}
